@@ -1,31 +1,32 @@
-// 1️⃣ Load environment variables
+
 require('dotenv').config();
 
+console.log(`this is my new branch`);
 const fs = require('fs');
 const path = require('path');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const qrcode = require('qrcode-terminal');
 
-// 2️⃣ Configure Gemini AI
+
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GENAI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-// 3️⃣ Your personal number (OWNER_NUMBER)
-const OWNER_NUMBER = '916356545412@c.us'; // <-- ⚠️ IMPORTANT: Make sure this is your WhatsApp number
 
-// 4️⃣ Query state tracking - ENHANCED TO STORE ORIGINAL QUERY TEXT
+const OWNER_NUMBER = '916356545412@c.us'; 
+
+
 let queryCounter = 0;
-let activeQueries = {}; // Tracks active queries: { queryNumber: { keyword, timestamp, status, originalQuery } }
-let recentQueries = {}; // Store recent queries for seller matching: { keyword: { text, timestamp, queryNumber } }
+let activeQueries = {}; 
+let recentQueries = {}; 
 
-// 5️⃣ Ensure logs directory exists
+
 const logsDir = path.join(__dirname, 'logs');
 if (!fs.existsSync(logsDir)) {
   fs.mkdirSync(logsDir, { recursive: true });
 }
 
-// 6️⃣ Load/Save query state
+
 const counterPath = path.join(__dirname, 'query_counter.json');
 try {
   const data = JSON.parse(fs.readFileSync(counterPath, 'utf-8'));
@@ -49,7 +50,7 @@ function saveQueryState() {
   }
 }
 
-// 7️⃣ Load group mappings
+
 let groups = {};
 const groupsPath = path.join(__dirname, 'groups.json');
 try {
@@ -61,16 +62,16 @@ try {
   fs.writeFileSync(groupsPath, JSON.stringify(groups, null, 2));
 }
 
-// 8️⃣ Store active seller conversations - ENHANCED WITH QUERY DETECTION
+
 let sellerConversations = {};
 
-// 9️⃣ Initialize WhatsApp client
+
 const client = new Client({
   authStrategy: new LocalAuth({ dataPath: './session', clientId: "product-inquiry-bot-v3" }),
   puppeteer: { headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox'] }
 });
 
-// 1️⃣0️⃣ --- CORE BOT LOGIC ---
+
 
 client.on('qr', qr => { qrcode.generate(qr, { small: true }); console.log('📱 Scan QR to log in.'); });
 client.on('ready', () => console.log('✅ WhatsApp Bot is ready and listening!'));
@@ -87,11 +88,11 @@ client.on('message', async msg => {
 
     console.log(`📨 Message from ${from}: hasMedia=${hasMedia}, body="${body}"`);
 
-    // --- OWNER COMMANDS ---
+    
     if (from === OWNER_NUMBER) {
       await handleOwnerMessage(msg, body);
     }
-    // --- SELLER REPLIES (INCLUDING MEDIA) ---
+    
     else if (!from.endsWith('@g.us')) {
       await handleSellerMessage(msg, from, body, hasMedia);
     }
@@ -100,18 +101,18 @@ client.on('message', async msg => {
   }
 });
 
-// 1️⃣1️⃣ --- ENHANCED OWNER MESSAGE HANDLER ---
+
 async function handleOwnerMessage(msg, body) {
-  // Command to restart everything
+  
   if (body.toLowerCase() === 'restart') {
     try {
-      // Reset all data
+      
       queryCounter = 0;
       activeQueries = {};
       recentQueries = {};
       sellerConversations = {};
       
-      // Save reset state
+      
       saveQueryState();
       
       console.log('🔄 SYSTEM RESTART: All data reset by owner');
@@ -124,7 +125,7 @@ async function handleOwnerMessage(msg, body) {
     }
   }
 
-  // Command to close a query
+  
   if (body.toLowerCase().startsWith('close')) {
     const queryNum = body.split(' ')[1];
     if (queryNum && activeQueries[queryNum]) {
@@ -138,7 +139,7 @@ async function handleOwnerMessage(msg, body) {
     return;
   }
  
-  // Logic to send a new query - ENHANCED TO STORE ORIGINAL QUERY
+  
   const keyword = Object.keys(groups).find(k => body.toUpperCase().includes(k.toUpperCase()));
   if (!keyword) {
     await msg.reply(`🤖 No valid product keyword found in "${body}". Available: ${Object.keys(groups).join(', ')}`);
@@ -148,16 +149,16 @@ async function handleOwnerMessage(msg, body) {
   queryCounter++;
   const qNum = queryCounter;
   
-  // STORE BOTH QUERY NUMBER AND ORIGINAL QUERY TEXT
+  
   activeQueries[qNum] = { 
     keyword, 
     timestamp: new Date().toISOString(), 
     status: 'active', 
     responses: [],
-    originalQuery: body // 🔥 Store the original query text
+    originalQuery: body 
   };
   
-  // Update recent queries for this keyword
+  
   recentQueries[keyword] = {
     text: body,
     timestamp: new Date().toISOString(),
@@ -167,7 +168,7 @@ async function handleOwnerMessage(msg, body) {
   saveQueryState();
   console.log(`🚀 New Query #${qNum} for "${keyword}" from owner: "${body}"`);
 
-  // const inquiryText = `Query #${qNum}: ${body}`; // Use original query text
+  
   const inquiryText = `I am looking for : ${body} if you have Reply Privately`;
   const groupIds = groups[keyword] || [];
   
@@ -194,27 +195,27 @@ async function handleOwnerMessage(msg, body) {
   }
 }
 
-// 1️⃣2️⃣ --- ENHANCED SELLER MESSAGE HANDLER WITH QUERY DETECTION ---
+
 async function handleSellerMessage(msg, from, body, hasMedia) {
   let conversation = sellerConversations[from];
 
-  // 🔄 INITIALIZE OR RESET CONVERSATION WITH QUERY DETECTION
+  
   if (!conversation || conversation.status === 'completed' || conversation.status === 'expired') {
-    // Try to detect which query they're responding to
+    
     const detectedQuery = detectQueryFromMessage(body);
     
-    // Initialize new conversation
+    
     sellerConversations[from] = {
       status: 'collecting_response',
       startTime: new Date(),
       images: [],
       textResponse: '',
-      linkedQuery: detectedQuery // Store the detected query info
+      linkedQuery: detectedQuery 
     };
     
     conversation = sellerConversations[from];
 
-    // Enhanced welcome message with query context
+    
     let instructions = `Thanks for replying privately from the group!\n\n`;
     
     if (detectedQuery) {
@@ -225,11 +226,11 @@ async function handleSellerMessage(msg, from, body, hasMedia) {
     
     await safeSendMessage(from, instructions);
     
-    // DON'T process the first message immediately - just show welcome
+    
     return;
   }
 
-  // 🎯 MAIN CONVERSATION FLOW
+  
   switch (conversation.status) {
     case 'collecting_response':
       await handleResponseCollection(msg, from, body, hasMedia, conversation);
@@ -241,16 +242,16 @@ async function handleSellerMessage(msg, from, body, hasMedia) {
   }
 }
 
-// 🔍 DETECT WHICH QUERY THE SELLER IS RESPONDING TO
+
 function detectQueryFromMessage(messageBody) {
-  // Try to match keywords from recent queries
+  
   for (const keyword of Object.keys(recentQueries)) {
     if (messageBody && messageBody.toUpperCase().includes(keyword.toUpperCase())) {
       return recentQueries[keyword];
     }
   }
   
-  // If no specific match, return the most recent query
+  
   const recentKeywords = Object.keys(recentQueries);
   if (recentKeywords.length > 0) {
     const mostRecentKeyword = recentKeywords.reduce((latest, current) => {
@@ -262,11 +263,11 @@ function detectQueryFromMessage(messageBody) {
   return null;
 }
 
-// 📝 HANDLE RESPONSE COLLECTION (TEXT + IMAGES)
+
 async function handleResponseCollection(msg, from, body, hasMedia, conversation) {
   console.log(`📝 Collecting response from ${from}: hasMedia=${hasMedia}, body="${body}"`);
  
-  // Handle media (images)
+  
   if (hasMedia) {
     try {
       console.log('📥 Processing incoming media...');
@@ -291,7 +292,7 @@ async function handleResponseCollection(msg, from, body, hasMedia, conversation)
     return;
   }
  
-  // Handle text responses
+  
   if (body && body.toLowerCase() !== 'finished') {
     conversation.textResponse += (conversation.textResponse ? '\n\n' : '') + body;
     console.log(`✅ Text added. Current response length: ${conversation.textResponse.length}`);
@@ -299,7 +300,7 @@ async function handleResponseCollection(msg, from, body, hasMedia, conversation)
     return;
   }
  
-  // Handle completion
+  
   if (body && body.toLowerCase() === 'finished') {
     if (conversation.textResponse || conversation.images.length > 0) {
       conversation.status = 'waiting_for_completion';
@@ -311,12 +312,12 @@ async function handleResponseCollection(msg, from, body, hasMedia, conversation)
   }
 }
 
-// ✅ HANDLE COMPLETION CONFIRMATION
+
 async function handleCompletionConfirmation(msg, from, body, conversation) {
   if (body.toLowerCase() === 'confirm') {
     await processAndForwardResponse(from, conversation);
   } else if (body.toLowerCase() === 'cancel') {
-    // Reset conversation
+    
     conversation.status = 'collecting_response';
     conversation.textResponse = '';
     conversation.images = [];
@@ -326,7 +327,7 @@ async function handleCompletionConfirmation(msg, from, body, conversation) {
   }
 }
 
-// 📤 ENHANCED PROCESS AND FORWARD RESPONSE TO OWNER
+
 async function processAndForwardResponse(from, conversation) {
   const sellerPhone = from.replace('@c.us', '');
   
@@ -334,17 +335,17 @@ async function processAndForwardResponse(from, conversation) {
   console.log(`📊 Response summary: ${conversation.images.length} images, ${conversation.textResponse.length} chars text`);
  
   try {
-    // 1️⃣ Send images first (if any) with enhanced captions
+    
     if (conversation.images.length > 0) {
       console.log(`📸 Forwarding ${conversation.images.length} images to owner...`);
      
       for (let i = 0; i < conversation.images.length; i++) {
         const imageData = conversation.images[i];
         try {
-          // Create MessageMedia object
+          
           const mediaMessage = new MessageMedia(imageData.media.mimetype, imageData.media.data, `image_${i + 1}.jpg`);
          
-          // Enhanced caption with query context
+          
           let caption = `📸 Image ${i + 1}/${conversation.images.length} from ‪+${sellerPhone}‬\n`;
           
           if (conversation.linkedQuery) {
@@ -361,7 +362,7 @@ async function processAndForwardResponse(from, conversation) {
          
           console.log(`✅ Image ${i + 1}/${conversation.images.length} sent to owner`);
          
-          // Small delay to prevent rate limiting
+          
           await new Promise(resolve => setTimeout(resolve, 1500));
          
         } catch (imageError) {
@@ -370,7 +371,7 @@ async function processAndForwardResponse(from, conversation) {
       }
     }
    
-    // 2️⃣ Process text with AI (if available) - CLEAN FORMATTING
+    
     let processedText = conversation.textResponse || 'No text details provided';
     if (conversation.textResponse) {
       try {
@@ -382,10 +383,10 @@ async function processAndForwardResponse(from, conversation) {
       }
     }
    
-    // 3️⃣ Send enhanced summary message to owner
+    
     let summaryMessage = `SELLER RESPONSE\n\nFrom: +${sellerPhone}\n\n`;
     
-    // Add query context if available
+    
     if (conversation.linkedQuery) {
       summaryMessage += `📋 *Original Query:*\n"${conversation.linkedQuery.text}"\n\n`;
     }
@@ -394,7 +395,7 @@ async function processAndForwardResponse(from, conversation) {
    
     await safeSendMessage(OWNER_NUMBER, summaryMessage);
    
-    // 4️⃣ Thank the seller and mark as completed
+    
     await safeSendMessage(from, '✅ Perfect! Your response has been sent to the buyer. Thank you for your submission!');
     conversation.status = 'completed';
    
@@ -406,7 +407,7 @@ async function processAndForwardResponse(from, conversation) {
   }
 }
 
-// 🛠️ UTILITY FUNCTIONS
+
 async function safeSendMessage(to, text, options = {}) {
   try {
     console.log(`🔄 Attempting to send message to: ${to}`);
@@ -420,13 +421,13 @@ async function safeSendMessage(to, text, options = {}) {
   }
 }
 
-// 🧹 CLEANUP & SYSTEM MANAGEMENT - Enhanced to clean old queries
+
 setInterval(() => {
   const now = Date.now();
-  const EXPIRE_TIME = 2 * 60 * 60 * 1000; // 2 hours
-  const QUERY_EXPIRE_TIME = 24 * 60 * 60 * 1000; // 24 hours for queries
+  const EXPIRE_TIME = 2 * 60 * 60 * 1000; 
+  const QUERY_EXPIRE_TIME = 24 * 60 * 60 * 1000; 
  
-  // Clean up seller conversations
+  
   for (const from in sellerConversations) {
     const conv = sellerConversations[from];
     if (conv.status !== 'completed' && now - new Date(conv.startTime).getTime() > EXPIRE_TIME) {
@@ -435,7 +436,7 @@ setInterval(() => {
     }
   }
   
-  // Clean up old recent queries
+  
   for (const keyword in recentQueries) {
     if (now - new Date(recentQueries[keyword].timestamp).getTime() > QUERY_EXPIRE_TIME) {
       console.log(`🧹 Cleaning up old query for ${keyword}`);
@@ -444,9 +445,9 @@ setInterval(() => {
   }
   
   saveQueryState();
-}, 15 * 60 * 1000); // Run every 15 minutes
+}, 15 * 60 * 1000); 
 
-// Error handling
+
 process.on('unhandledRejection', (reason, promise) => {
   console.error('🚨 Unhandled Rejection at:', promise, 'reason:', reason);
   saveQueryState();
@@ -475,6 +476,6 @@ process.on('uncaughtException', (err, origin) => {
   process.exit(1);
 });
 
-// Start the client
+
 console.log('🚀 Initializing Bot v3 with Enhanced Query Display System...');
 client.initialize();
