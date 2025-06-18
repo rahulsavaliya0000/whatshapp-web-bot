@@ -1,0 +1,57 @@
+{
+  "counter": 5,
+  "activeQueries": {
+    "1": {
+      "keyword": "PENDRIVE",
+      "timestamp": "2025-06-17T20:10:14.450Z",
+      "status": "active",
+      "responses": [],
+      "originalQuery": "Pendrive with bun and coff"
+    },
+    "2": {
+      "keyword": "PENDRIVE",
+      "timestamp": "2025-06-17T20:14:28.320Z",
+      "status": "active",
+      "responses": [],
+      "originalQuery": "pendrive"
+    },
+    "3": {
+      "keyword": "PENDRIVE",
+      "timestamp": "2025-06-18T02:39:42.326Z",
+      "status": "active",
+      "responses": [],
+      "originalQuery": "sandisk  6 pendrive"
+    },
+    "4": {
+      "keyword": "MONITOR",
+      "timestamp": "2025-06-18T02:40:01.804Z",
+      "status": "active",
+      "responses": [],
+      "originalQuery": "asus monitor five"
+    },
+    "5": {
+      "keyword": "MOUSE",
+      "timestamp": "2025-06-18T02:40:08.434Z",
+      "status": "active",
+      "responses": [],
+      "originalQuery": "mouse green"
+    }
+  },
+  "recentQueries": {
+    "PENDRIVE": {
+      "text": "sandisk  6 pendrive",
+      "timestamp": "2025-06-18T02:39:42.326Z",
+      "queryNumber": 3
+    },
+    "MONITOR": {
+      "text": "asus monitor five",
+      "timestamp": "2025-06-18T02:40:01.804Z",
+      "queryNumber": 4
+    },
+    "MOUSE": {
+      "text": "mouse green",
+      "timestamp": "2025-06-18T02:40:08.434Z",
+      "queryNumber": 5
+    }
+  }
+}

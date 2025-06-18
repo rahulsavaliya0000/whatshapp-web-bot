@@ -1,0 +1,15 @@
+2025/06/16-20:49:59.447 683c Reusing MANIFEST X:\whatsapp-ai-bot\clientA\session\session-product-inquiry-bot-v2\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/06/16-20:49:59.447 683c Recovering log #96
+2025/06/16-20:49:59.468 683c Reusing old log X:\whatsapp-ai-bot\clientA\session\session-product-inquiry-bot-v2\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000096.log 
+2025/06/16-20:50:00.971 683c Level-0 table #102: started
+2025/06/16-20:50:00.985 683c Level-0 table #102: 807592 bytes OK
+2025/06/16-20:50:00.987 683c Delete type=0 #96
+2025/06/16-20:50:00.988 683c Manual compaction at level-0 from '\x00"\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00#\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/06/16-20:50:02.285 25cc Compacting 1@1 + 2@2 files
+2025/06/16-20:50:02.339 25cc Generated table #103@1: 50133 keys, 2222060 bytes
+2025/06/16-20:50:02.371 25cc Generated table #104@1: 35060 keys, 1621508 bytes
+2025/06/16-20:50:02.371 25cc Compacted 1@1 + 2@2 files => 3843568 bytes
+2025/06/16-20:50:02.372 25cc compacted to: files[ 0 0 2 0 0 0 0 ]
+2025/06/16-20:50:02.372 25cc Delete type=2 #98
+2025/06/16-20:50:02.373 25cc Delete type=2 #99
+2025/06/16-20:50:02.373 25cc Delete type=2 #102

@@ -1,0 +1,177 @@
+[
+  {
+    "timestamp": "2025-06-15T19:05:45.410Z",
+    "user": "918238296585@c.us",
+    "text": "pendrive"
+  },
+  {
+    "timestamp": "2025-06-15T19:10:18.264Z",
+    "user": "917567624988@c.us",
+    "text": "pendrive"
+  },
+  {
+    "timestamp": "2025-06-15T19:21:27.042Z",
+    "user": "917567624988@c.us",
+    "product": "PENDRIVE",
+    "text": "pendrive"
+  },
+  {
+    "timestamp": "2025-06-15T20:07:43.640Z",
+    "user": "917567624988@c.us",
+    "product": "LAPTOP",
+    "text": "LAPTOP"
+  },
+  {
+    "timestamp": "2025-06-15T20:08:38.780Z",
+    "user": "917567624988@c.us",
+    "product": "MOUSE",
+    "text": "MOUSE"
+  },
+  {
+    "timestamp": "2025-06-15T20:28:45.724Z",
+    "user": "917567624988@c.us",
+    "product": "LAPTOP",
+    "text": "Laptop"
+  },
+  {
+    "timestamp": "2025-06-15T20:29:07.743Z",
+    "user": "917567624988@c.us",
+    "product": "LAPTOP",
+    "text": "Laptop"
+  },
+  {
+    "timestamp": "2025-06-15T20:32:38.702Z",
+    "user": "917567624988@c.us",
+    "product": "MOUSE",
+    "text": "Mouse"
+  },
+  {
+    "timestamp": "2025-06-15T20:34:29.159Z",
+    "user": "917567624988@c.us",
+    "product": "PENDRIVE",
+    "text": "Pendrive"
+  },
+  {
+    "timestamp": "2025-06-15T20:48:25.486Z",
+    "user": "917567624988@c.us",
+    "product": "LAPTOP",
+    "text": "Laptop"
+  },
+  {
+    "timestamp": "2025-06-15T20:55:18.083Z",
+    "user": "917567624988@c.us",
+    "product": "MOUSE",
+    "text": "Mouse"
+  },
+  {
+    "timestamp": "2025-06-16T10:30:33.973Z",
+    "user": "917567624988@c.us",
+    "product": "PENDRIVE",
+    "text": "PenDrIve"
+  },
+  {
+    "timestamp": "2025-06-16T10:31:12.298Z",
+    "user": "917567624988@c.us",
+    "product": "MONITOR",
+    "text": "MonitoR"
+  },
+  {
+    "timestamp": "2025-06-16T11:08:58.272Z",
+    "user": "917567624988@c.us",
+    "product": "PENDRIVE",
+    "text": "Pendrive"
+  },
+  {
+    "timestamp": "2025-06-16T11:20:00.251Z",
+    "user": "916356545412@c.us",
+    "product": "PENDRIVE",
+    "text": "Pendrive i want"
+  },
+  {
+    "timestamp": "2025-06-16T11:21:28.755Z",
+    "user": "916356545412@c.us",
+    "product": "MONITOR",
+    "text": "Monitor"
+  },
+  {
+    "queryNumber": 1,
+    "timestamp": "2025-06-16T11:29:05.471Z",
+    "user": "916356545412@c.us",
+    "product": "MONITOR",
+    "text": "Monitor"
+  },
+  {
+    "queryNumber": 2,
+    "timestamp": "2025-06-16T11:30:46.701Z",
+    "user": "916356545412@c.us",
+    "product": "MOUSE",
+    "text": "Mouse"
+  },
+  {
+    "queryNumber": 3,
+    "timestamp": "2025-06-16T11:30:56.309Z",
+    "user": "916356545412@c.us",
+    "product": "PENDRIVE",
+    "text": "Pendrive"
+  },
+  {
+    "queryNumber": 4,
+    "timestamp": "2025-06-16T11:32:47.448Z",
+    "user": "916356545412@c.us",
+    "product": "PENDRIVE",
+    "text": "Pendrive"
+  },
+  {
+    "queryNumber": 5,
+    "timestamp": "2025-06-16T11:32:47.520Z",
+    "user": "916356545412@c.us",
+    "product": "MONITOR",
+    "text": "Monitor"
+  },
+  {
+    "queryNumber": 6,
+    "timestamp": "2025-06-16T13:43:44.369Z",
+    "user": "916356545412@c.us",
+    "product": "PENDRIVE",
+    "text": "Pendrive"
+  },
+  {
+    "queryNumber": 7,
+    "timestamp": "2025-06-16T13:43:48.836Z",
+    "user": "916356545412@c.us",
+    "product": "MONITOR",
+    "text": "Monitor"
+  },
+  {
+    "queryNumber": 8,
+    "timestamp": "2025-06-16T13:52:10.396Z",
+    "user": "916356545412@c.us",
+    "product": "MONITOR",
+    "text": "Monitor"
+  },
+  {
+    "queryNumber": 9,
+    "timestamp": "2025-06-16T13:52:57.542Z",
+    "user": "916356545412@c.us",
+    "product": "PENDRIVE",
+    "text": "Pendrive"
+  },
+  {
+    "queryNumber": 10,
+    "timestamp": "2025-06-16T14:22:03.633Z",
+    "product": "MONITOR",
+    "text": "Monitor"
+  },
+  {
+    "queryNumber": 11,
+    "timestamp": "2025-06-16T14:22:09.542Z",
+    "product": "MOUSE",
+    "text": "Mouse"
+  },
+  {
+    "queryNumber": 12,
+    "timestamp": "2025-06-16T14:22:26.986Z",
+    "product": "PENDRIVE",
+    "text": "Pendrive"
+  }
+]
