@@ -2,6 +2,7 @@
 require('dotenv').config();
 
 console.log(`this is my main now for today`);
+console.log(`this is authentication problem solved in feature four`);
 const fs = require('fs');
 const path = require('path');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
